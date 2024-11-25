@@ -36,3 +36,4 @@ fun App() {
        Navigator(RegistrationScreen( ))
     }
 }
+

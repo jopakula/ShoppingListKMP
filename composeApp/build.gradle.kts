@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlinxSerialization)
 }
 
 kotlin {
@@ -30,12 +30,15 @@ kotlin {
     }
     
     sourceSets {
-        
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin )
+        }
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
 
-            implementation(libs.ktor.client.okhttp )
+            implementation(libs.ktor.client.android )
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -47,16 +50,19 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
 
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+
             implementation(libs.navigator)
             implementation(libs.navigator.tabs)
             implementation(libs.navigator.transitions)
             implementation(libs.navigator.koin)
-            implementation(libs.koin.core)
 
-            implementation(libs.bundles.ktor)
-        }
-        nativeMain.dependencies { 
-             implementation(libs.ktor.client.darwin )
         }
     }
 }
