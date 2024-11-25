@@ -1,4 +1,4 @@
-package presentation.screens.item
+package presentation.screens.registration
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,24 +8,24 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import presentation.screens.main.MainScreen
 
-class ItemScreen(private val itemId: Int) : Screen {
+class RegistrationScreen: Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.current
-
         Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            modifier = Modifier
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Item screen $itemId")
-            Button(onClick = { navigator?.pop() }) {
-                Text(text = "Back")
+            Button(onClick = {navigator?.push(MainScreen())}){
+                Text(text = "Get token")
             }
+
         }
     }
 }
