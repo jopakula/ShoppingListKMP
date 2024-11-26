@@ -55,11 +55,6 @@ class RegistrationScreen : Screen {
                         delay(1000)
                         viewModel.logIn(keyState.getSuccessData())
                     }
-//                    LaunchedEffect(Unit) {
-//                        delay(2000)
-//                        navigator?.push(MainScreen())
-//                        viewModel.resetState()
-//                    }
                 }
 
                 is RequestState.Error -> {
