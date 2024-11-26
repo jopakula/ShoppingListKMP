@@ -1,4 +1,4 @@
-package presentation.screens.main
+package presentation.screens.authorization
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,24 +12,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import presentation.screens.list.ListScreen
+import presentation.screens.main.MainScreen
 
-class MainScreen: Screen {
+class AuthorizationScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.current
-        val lists = listOf(1,2,3,4)
-        Column (
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            lists.forEach {
-                Button(onClick = {navigator?.push(ListScreen(listId = it))}){
-                    Text(text = "Go to list $it")
-                }
-            }
-        }
+       Column(
+           modifier = Modifier
+               .fillMaxSize()
+               .padding(16.dp),
+           verticalArrangement = Arrangement.Center,
+           horizontalAlignment = Alignment.CenterHorizontally,
+       ) {
+           Button(onClick = { navigator?.push(MainScreen()) }){
+               Text(text = "На главную")
+           }
+       }
     }
+
 }

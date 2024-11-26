@@ -27,4 +27,9 @@ class RegistrationViewModel(
             }
         }
     }
+
+    fun resetState() {
+        _uiState.value = RequestState.Idle
+    }
+
 }
