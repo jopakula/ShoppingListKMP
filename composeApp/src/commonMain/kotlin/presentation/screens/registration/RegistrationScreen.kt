@@ -9,11 +9,11 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import domain.RequestState
@@ -26,8 +26,12 @@ class RegistrationScreen : Screen {
     @Composable
     override fun Content() {
         val viewModel: RegistrationViewModel = koinViewModel()
-        val uiState by viewModel.uiState.collectAsState()
+
         val navigator = LocalNavigator.current
+
+        val keyState by viewModel.keyState.collectAsStateWithLifecycle()
+        val authState by viewModel.authState.collectAsStateWithLifecycle()
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -35,7 +39,7 @@ class RegistrationScreen : Screen {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            when (uiState) {
+            when (keyState) {
                 is RequestState.Idle -> {
                     Button(onClick = { viewModel.fetchToken() }) {
                         Text("Получить токен")
@@ -46,17 +50,45 @@ class RegistrationScreen : Screen {
                 }
 
                 is RequestState.Success -> {
-                    Text("Ваш токен: ${uiState.getSuccessData()}")
+                    Text("Ваш токен: ${keyState.getSuccessData()}")
+                    LaunchedEffect(keyState.getSuccessData()) {
+                        delay(1000)
+                        viewModel.logIn(keyState.getSuccessData())
+                    }
+//                    LaunchedEffect(Unit) {
+//                        delay(2000)
+//                        navigator?.push(MainScreen())
+//                        viewModel.resetState()
+//                    }
+                }
+
+                is RequestState.Error -> {
+                    Text("Ошибка: ${keyState.getErrorMessage()}")
+                    Button(onClick = { viewModel.fetchToken() }) {
+                        Text("Попробовать снова")
+                    }
+                }
+            }
+
+            when (authState) {
+                is RequestState.Idle -> {}
+                is RequestState.Loading -> {
+                    CircularProgressIndicator()
+                }
+                is RequestState.Success -> {
+                    Text("Успешный вход!")
+
                     LaunchedEffect(Unit) {
-                        delay(2000)
+                        delay(1000)
                         navigator?.push(MainScreen())
                         viewModel.resetState()
                     }
                 }
-
                 is RequestState.Error -> {
-                    Text("Ошибка: ${uiState.getErrorMessage()}")
-                    Button(onClick = { viewModel.fetchToken() }) {
+                    Text("Ошибка авторизации: ${authState.getErrorMessage()}")
+                    Button(onClick = {
+                        viewModel.logIn(keyState.getSuccessData())
+                    }) {
                         Text("Попробовать снова")
                     }
                 }

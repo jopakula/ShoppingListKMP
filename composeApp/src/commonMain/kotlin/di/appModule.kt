@@ -8,7 +8,8 @@ val appModule = module {
 
     viewModel<RegistrationViewModel> {
         RegistrationViewModel(
-            getRegistrationTokenUseCase = get()
+            getRegistrationTokenUseCase = get(),
+            authorizationUseCase = get()
         )
     }
 
