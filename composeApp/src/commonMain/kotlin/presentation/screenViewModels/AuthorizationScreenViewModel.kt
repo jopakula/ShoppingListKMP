@@ -1,4 +1,4 @@
-package presentation.viewModels
+package presentation.screenViewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class AuthorizationViewModel(
+class AuthorizationScreenViewModel(
     private val authorizationUseCase: AuthorizationUseCase,
 ): ViewModel() {
 

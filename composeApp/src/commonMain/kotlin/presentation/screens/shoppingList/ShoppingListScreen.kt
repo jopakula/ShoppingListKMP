@@ -1,4 +1,4 @@
-package presentation.screens.list
+package presentation.screens.shoppingList
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,7 +14,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import presentation.screens.item.ItemScreen
 
-class ListScreen(private val listId: Int) : Screen {
+class ShoppingListScreen(private val listId: Int) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.current
