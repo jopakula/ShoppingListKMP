@@ -21,13 +21,13 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import domain.RequestState
 import kotlinx.coroutines.delay
 import org.koin.compose.viewmodel.koinViewModel
+import presentation.screenViewModels.AuthorizationScreenViewModel
 import presentation.screens.main.MainScreen
-import presentation.viewModels.AuthorizationViewModel
 
 class AuthorizationScreen : Screen {
     @Composable
     override fun Content() {
-        val viewModel: AuthorizationViewModel = koinViewModel()
+        val viewModel: AuthorizationScreenViewModel = koinViewModel()
 
         val navigator = LocalNavigator.current
 
@@ -69,7 +69,7 @@ class AuthorizationScreen : Screen {
                    Text("Успешный вход!")
                    LaunchedEffect(Unit) {
                        delay(1000)
-                       navigator?.push(MainScreen())
+                       navigator?.push(MainScreen(token = key))
                        viewModel.resetState()
                    }
                }

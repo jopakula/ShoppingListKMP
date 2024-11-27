@@ -1,6 +1,8 @@
 package data.storage.network
 
 import domain.models.AuthResponseModel
+import domain.models.CreateShoppingListResponse
+import domain.models.FetchAllShoppingListsResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -18,6 +20,7 @@ class CyberprotApi {
             json(
                 Json {
                     ignoreUnknownKeys = true
+                    isLenient = true
                 }
             )
         }
@@ -31,6 +34,21 @@ class CyberprotApi {
 
     suspend fun authenticateWithKey(key: String): AuthResponseModel {
         val url = "$BASE_URL_CYBERPROT/Authentication?key=$key"
-        return client.get(url).body()
+        return client.get(urlString = url).body()
+    }
+
+    suspend fun createShoppingList(key: String, name: String): CreateShoppingListResponse{
+        val url = "$BASE_URL_CYBERPROT/CreateShoppingList"
+        return client.get(url) {
+            url {
+                parameters.append("key", key)
+                parameters.append("name", name)
+            }
+        }.body()
+    }
+
+    suspend fun fetchAllShoppingLists(key: String): FetchAllShoppingListsResponse {
+        val url = "$BASE_URL_CYBERPROT/GetAllMyShopLists?key=$key"
+        return client.get(urlString = url).body()
     }
 }

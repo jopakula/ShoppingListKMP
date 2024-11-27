@@ -35,6 +35,9 @@ fun ShoppingListCard(
             Text(
                 text = "ID: ${shoppingListModel.id}",
             )
+            Text(
+                text = "Date: ${shoppingListModel.created}",
+            )
         }
     }
 }

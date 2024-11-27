@@ -2,21 +2,29 @@ package di
 
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
-import presentation.viewModels.AuthorizationViewModel
-import presentation.viewModels.RegistrationViewModel
+import presentation.screenViewModels.AuthorizationScreenViewModel
+import presentation.screenViewModels.MainScreenViewModel
+import presentation.screenViewModels.RegistrationScreenViewModel
 
 val appModule = module {
 
-    viewModel<RegistrationViewModel> {
-        RegistrationViewModel(
-            getRegistrationTokenUseCase = get(),
+    viewModel<RegistrationScreenViewModel> {
+        RegistrationScreenViewModel(
+            fetchRegistrationTokenUseCase = get(),
             authorizationUseCase = get()
         )
     }
 
-    viewModel<AuthorizationViewModel> {
-        AuthorizationViewModel(
+    viewModel<AuthorizationScreenViewModel> {
+        AuthorizationScreenViewModel(
             authorizationUseCase = get()
+        )
+    }
+
+    viewModel<MainScreenViewModel> {
+        MainScreenViewModel(
+            fetchAllShoppingListsUseCase = get(),
+            createShoppingListUseCase = get()
         )
     }
 

@@ -27,7 +27,7 @@ class AuthorizationScreenViewModel(
             }.onSuccess { response ->
                 _authState.value = RequestState.Success(response)
             }.onFailure { exception ->
-
+                _authState.value = RequestState.Error(exception.message ?: "Unknown error")
             }
         }
     }

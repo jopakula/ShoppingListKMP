@@ -5,13 +5,13 @@ import androidx.lifecycle.viewModelScope
 import domain.RequestState
 import domain.models.AuthResponseModel
 import domain.useCases.AuthorizationUseCase
-import domain.useCases.GetRegistrationTokenUseCase
+import domain.useCases.FetchRegistrationTokenUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class RegistrationScreenViewModel(
-    private val getRegistrationTokenUseCase: GetRegistrationTokenUseCase,
+    private val fetchRegistrationTokenUseCase: FetchRegistrationTokenUseCase,
     private val authorizationUseCase: AuthorizationUseCase,
 ) : ViewModel() {
 
@@ -25,7 +25,7 @@ class RegistrationScreenViewModel(
         viewModelScope.launch {
             _keyState.value = RequestState.Loading
             runCatching {
-                getRegistrationTokenUseCase.execute()
+                fetchRegistrationTokenUseCase.execute()
             }.onSuccess { token ->
                 _keyState.value = RequestState.Success(token)
             }.onFailure { exception ->
@@ -42,7 +42,7 @@ class RegistrationScreenViewModel(
             }.onSuccess { response ->
                 _authState.value = RequestState.Success(response)
             }.onFailure { exception ->
-                _keyState.value = RequestState.Error(exception.message ?: "Unknown error")
+                _authState.value = RequestState.Error(exception.message ?: "Unknown error")
             }
         }
     }

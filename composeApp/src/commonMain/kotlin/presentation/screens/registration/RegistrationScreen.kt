@@ -19,13 +19,13 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import domain.RequestState
 import kotlinx.coroutines.delay
 import org.koin.compose.viewmodel.koinViewModel
+import presentation.screenViewModels.RegistrationScreenViewModel
 import presentation.screens.main.MainScreen
-import presentation.viewModels.RegistrationViewModel
 
 class RegistrationScreen : Screen {
     @Composable
     override fun Content() {
-        val viewModel: RegistrationViewModel = koinViewModel()
+        val viewModel: RegistrationScreenViewModel = koinViewModel()
 
         val navigator = LocalNavigator.current
 
@@ -75,7 +75,7 @@ class RegistrationScreen : Screen {
 
                     LaunchedEffect(Unit) {
                         delay(1000)
-                        navigator?.push(MainScreen())
+                        navigator?.push(MainScreen(token = keyState.getSuccessData()))
                         viewModel.resetState()
                     }
                 }

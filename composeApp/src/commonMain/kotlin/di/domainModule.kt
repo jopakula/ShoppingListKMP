@@ -1,12 +1,18 @@
 package di
 
 import domain.useCases.AuthorizationUseCase
-import domain.useCases.GetRegistrationTokenUseCase
+import domain.useCases.CreateShoppingListUseCase
+import domain.useCases.FetchAllShoppingListsUseCase
+import domain.useCases.FetchRegistrationTokenUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
 
-    factory<GetRegistrationTokenUseCase> { GetRegistrationTokenUseCase(repository = get()) }
+    factory<FetchRegistrationTokenUseCase> { FetchRegistrationTokenUseCase(repository = get()) }
 
     factory<AuthorizationUseCase> { AuthorizationUseCase(repository = get()) }
+
+    factory<CreateShoppingListUseCase> { CreateShoppingListUseCase(repository = get()) }
+
+    factory<FetchAllShoppingListsUseCase> { FetchAllShoppingListsUseCase(repository = get()) }
 }
