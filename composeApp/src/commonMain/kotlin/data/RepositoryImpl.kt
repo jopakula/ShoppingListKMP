@@ -3,8 +3,9 @@ package data
 import data.storage.NetworkStorage
 import domain.Repository
 import domain.models.AuthResponseModel
-import domain.models.CreateShoppingListResponse
-import domain.models.FetchAllShoppingListsResponse
+import domain.models.CreateShoppingListResponseModel
+import domain.models.FetchAllShoppingListsResponseModel
+import domain.models.RemoveShoppingListResponse
 
 class RepositoryImpl(
     private val networkStorage: NetworkStorage,
@@ -17,11 +18,15 @@ class RepositoryImpl(
         return networkStorage.logIn(key = key)
     }
 
-    override suspend fun createShoppingList(key: String, name: String): CreateShoppingListResponse {
+    override suspend fun createShoppingList(key: String, name: String): CreateShoppingListResponseModel {
         return networkStorage.createShoppingList(key = key, name = name)
     }
 
-    override suspend fun fetchAllShoppingLists(key: String): FetchAllShoppingListsResponse {
+    override suspend fun fetchAllShoppingLists(key: String): FetchAllShoppingListsResponseModel {
         return networkStorage.fetchAllShoppingLists(key = key)
+    }
+
+    override suspend fun removeShoppingList(listId: Int): RemoveShoppingListResponse {
+        return networkStorage.removeShoppingList(listId = listId)
     }
 }

@@ -45,8 +45,8 @@ fun ShoppingListBottomSheet(
                 onClick = {
                     if (text.isNotEmpty()) {
                         onClick(text)
-                        onDismiss()
                     }
+                    onDismiss()
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {

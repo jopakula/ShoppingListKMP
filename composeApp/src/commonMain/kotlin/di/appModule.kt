@@ -24,7 +24,8 @@ val appModule = module {
     viewModel<MainScreenViewModel> {
         MainScreenViewModel(
             fetchAllShoppingListsUseCase = get(),
-            createShoppingListUseCase = get()
+            createShoppingListUseCase = get(),
+            removeShoppingListUseCase = get()
         )
     }
 

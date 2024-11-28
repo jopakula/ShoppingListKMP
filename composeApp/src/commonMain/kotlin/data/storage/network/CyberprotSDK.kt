@@ -2,8 +2,9 @@ package data.storage.network
 
 import domain.RequestState
 import domain.models.AuthResponseModel
-import domain.models.CreateShoppingListResponse
-import domain.models.FetchAllShoppingListsResponse
+import domain.models.CreateShoppingListResponseModel
+import domain.models.FetchAllShoppingListsResponseModel
+import domain.models.RemoveShoppingListResponse
 
 class CyberprotSDK (private val api: CyberprotApi) {
 
@@ -25,7 +26,7 @@ class CyberprotSDK (private val api: CyberprotApi) {
         }
     }
 
-    suspend fun createShoppingList(key: String, name: String): RequestState<CreateShoppingListResponse>{
+    suspend fun createShoppingList(key: String, name: String): RequestState<CreateShoppingListResponseModel>{
         return try {
             val response = api.createShoppingList(key = key, name = name)
             RequestState.Success(response)
@@ -34,11 +35,20 @@ class CyberprotSDK (private val api: CyberprotApi) {
         }
     }
 
-    suspend fun fetchAllShoppingLists(key: String): RequestState<FetchAllShoppingListsResponse>{
+    suspend fun fetchAllShoppingLists(key: String): RequestState<FetchAllShoppingListsResponseModel>{
         return try {
             val response = api.fetchAllShoppingLists(key = key)
             RequestState.Success(response)
         } catch (e: Exception){
+            RequestState.Error(e.message ?: "Unknown error")
+        }
+    }
+
+    suspend fun removeShoppingList(listId: Int): RequestState<RemoveShoppingListResponse> {
+        return try {
+            val response = api.removeShoppingList(listId)
+            RequestState.Success(response)
+        } catch (e: Exception) {
             RequestState.Error(e.message ?: "Unknown error")
         }
     }

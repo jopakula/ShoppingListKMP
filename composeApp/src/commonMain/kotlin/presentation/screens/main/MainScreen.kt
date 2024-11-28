@@ -39,6 +39,8 @@ class MainScreen(private val token: String): Screen {
 
         val navigator = LocalNavigator.current
         val shoppingListsState by viewModel.shoppingListsState.collectAsStateWithLifecycle()
+        val createOperationState by viewModel.createOperationState.collectAsStateWithLifecycle()
+        val removeOperationState by viewModel.removeOperationState.collectAsStateWithLifecycle()
         var showBottomSheet by rememberSaveable { mutableStateOf(false) }
 
         LaunchedEffect(Unit){
@@ -52,17 +54,44 @@ class MainScreen(private val token: String): Screen {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Text(text = token)
+            when (createOperationState) {
+                is RequestState.Loading -> CircularProgressIndicator()
+                is RequestState.Success -> {
+                    Text(text = "List created successfully", color = Color.Green)
+                }
+                is RequestState.Error -> {
+                    Text(text = "Error: ${createOperationState.getErrorMessage()}", color = Color.Red)
+                }
+                else -> Unit
+            }
+
+            when (removeOperationState) {
+                is RequestState.Loading -> CircularProgressIndicator()
+                is RequestState.Success -> {
+                    val isRemoved = removeOperationState.getSuccessData()
+                    val message = if (isRemoved) "List removed successfully" else "List restored successfully"
+                    Text(text = message, color = Color.Green)
+                }
+                is RequestState.Error -> {
+                    Text(text = "Error: ${removeOperationState.getErrorMessage()}", color = Color.Red)
+                }
+                else -> Unit
+            }
             when (shoppingListsState) {
                 is RequestState.Loading -> CircularProgressIndicator()
                 is RequestState.Success -> {
                     LazyColumn {
                         items(shoppingListsState.getSuccessData()) { list ->
-                            ShoppingListCard(shoppingListModel = list)
+                            ShoppingListCard(
+                                shoppingListModel = list,
+                                onIconClick = {
+                                    viewModel.removeShoppingList(token = token, listId = list.id)
+                                })
                         }
                     }
                 }
                 is RequestState.Error -> {
-                    Text(text = "Ошибка загрузки: ${(shoppingListsState as RequestState.Error).message}")
+                    Text(text = "Ошибка загрузки: ${shoppingListsState.getErrorMessage()}")
                 }
                 else -> Unit
             }
