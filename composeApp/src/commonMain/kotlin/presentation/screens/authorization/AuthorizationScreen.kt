@@ -51,13 +51,15 @@ class AuthorizationScreen : Screen {
 
            )
 
-           Button(
-               onClick = {
-                   viewModel.logIn(key = key)
-               },
-               enabled = authState !is RequestState.Loading
-           ) {
-               Text("Войти")
+           if (authState is RequestState.Idle ) {
+               Button(
+                   onClick = {
+                       viewModel.logIn(key = key)
+                   },
+                   enabled = authState !is RequestState.Loading
+               ) {
+                   Text("Войти")
+               }
            }
 
            when (authState) {
@@ -74,7 +76,10 @@ class AuthorizationScreen : Screen {
                    }
                }
                is RequestState.Error -> {
-                   Text("Ошибка авторизации: ${authState.getErrorMessage()}")
+                   val errorMessage = authState.getErrorMessage()
+                   Text(
+                       text = "Ошибка авторизации: $errorMessage",
+                   )
                    Button(onClick = {
                        viewModel.logIn(key = key)
                    }) {

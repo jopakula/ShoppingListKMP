@@ -19,15 +19,22 @@ class AuthorizationScreenViewModel(
     private val _key = MutableStateFlow("")
     val key: StateFlow<String> = _key
 
-    fun logIn(key: String){
+    fun logIn(key: String) {
         viewModelScope.launch {
             _authState.value = RequestState.Loading
             runCatching {
                 authorizationUseCase.execute(key = key)
             }.onSuccess { response ->
-                _authState.value = RequestState.Success(response)
+                if (response.success) {
+                    _authState.value = RequestState.Success(response)  // Обновляем состояние на успешный результат
+                    println(RequestState.Success(response))
+                } else {
+                    _authState.value = RequestState.Error("Invalid key or authentication failed")  // Обновляем состояние на ошибку
+                    println(RequestState.Error("Invalid key or authentication failed"))
+                }
             }.onFailure { exception ->
-                _authState.value = RequestState.Error(exception.message ?: "Unknown error")
+                _authState.value = RequestState.Error(exception.message ?: "Unknown error")  // Обновляем состояние на ошибку
+                println(RequestState.Error(exception.message ?: "Unknown error"))
             }
         }
     }
