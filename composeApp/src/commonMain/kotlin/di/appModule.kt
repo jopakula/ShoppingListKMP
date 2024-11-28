@@ -5,6 +5,7 @@ import org.koin.dsl.module
 import presentation.screenViewModels.AuthorizationScreenViewModel
 import presentation.screenViewModels.MainScreenViewModel
 import presentation.screenViewModels.RegistrationScreenViewModel
+import presentation.screenViewModels.ShoppingListScreenViewModel
 
 val appModule = module {
 
@@ -26,6 +27,12 @@ val appModule = module {
             fetchAllShoppingListsUseCase = get(),
             createShoppingListUseCase = get(),
             removeShoppingListUseCase = get()
+        )
+    }
+
+    viewModel<ShoppingListScreenViewModel> {
+        ShoppingListScreenViewModel(
+            get()
         )
     }
 

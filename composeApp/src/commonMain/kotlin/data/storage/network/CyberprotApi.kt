@@ -3,7 +3,8 @@ package data.storage.network
 import domain.models.AuthResponseModel
 import domain.models.CreateShoppingListResponseModel
 import domain.models.FetchAllShoppingListsResponseModel
-import domain.models.RemoveShoppingListResponse
+import domain.models.FetchShoppingListResponseModel
+import domain.models.RemoveShoppingListResponseModel
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -40,7 +41,7 @@ class CyberprotApi {
 
     suspend fun createShoppingList(key: String, name: String): CreateShoppingListResponseModel{
         val url = "$BASE_URL_CYBERPROT/CreateShoppingList"
-        return client.get(url) {
+        return client.get(urlString = url) {
             url {
                 parameters.append("key", key)
                 parameters.append("name", name)
@@ -53,8 +54,13 @@ class CyberprotApi {
         return client.get(urlString = url).body()
     }
 
-    suspend fun removeShoppingList(listId: Int): RemoveShoppingListResponse {
+    suspend fun removeShoppingList(listId: Int): RemoveShoppingListResponseModel {
         val url = "$BASE_URL_CYBERPROT/RemoveShoppingList?list_id=$listId"
-        return client.get(url).body()
+        return client.get(urlString = url).body()
+    }
+
+    suspend fun fetchShoppingListById(listId: Int): FetchShoppingListResponseModel {
+        val url = "$BASE_URL_CYBERPROT/GetShoppingList?list_id=$listId"
+        return client.get(urlString = url).body()
     }
 }

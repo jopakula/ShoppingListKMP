@@ -5,7 +5,8 @@ import domain.Repository
 import domain.models.AuthResponseModel
 import domain.models.CreateShoppingListResponseModel
 import domain.models.FetchAllShoppingListsResponseModel
-import domain.models.RemoveShoppingListResponse
+import domain.models.FetchShoppingListResponseModel
+import domain.models.RemoveShoppingListResponseModel
 
 class RepositoryImpl(
     private val networkStorage: NetworkStorage,
@@ -26,7 +27,11 @@ class RepositoryImpl(
         return networkStorage.fetchAllShoppingLists(key = key)
     }
 
-    override suspend fun removeShoppingList(listId: Int): RemoveShoppingListResponse {
+    override suspend fun removeShoppingList(listId: Int): RemoveShoppingListResponseModel {
         return networkStorage.removeShoppingList(listId = listId)
+    }
+
+    override suspend fun fetchShoppingListById(listId: Int): FetchShoppingListResponseModel {
+        return networkStorage.fetchShoppingListById(listId = listId)
     }
 }

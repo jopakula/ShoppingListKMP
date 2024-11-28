@@ -29,6 +29,7 @@ import domain.RequestState
 import org.koin.compose.viewmodel.koinViewModel
 import presentation.cards.ShoppingListCard
 import presentation.screenViewModels.MainScreenViewModel
+import presentation.screens.shoppingList.ShoppingListScreen
 import presentation.sheets.shoppingList.ShoppingListBottomSheet
 
 class MainScreen(private val token: String): Screen {
@@ -53,7 +54,9 @@ class MainScreen(private val token: String): Screen {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp)) {
+
             Text(text = token)
+
             when (createOperationState) {
                 is RequestState.Loading -> CircularProgressIndicator()
                 is RequestState.Success -> {
@@ -77,6 +80,7 @@ class MainScreen(private val token: String): Screen {
                 }
                 else -> Unit
             }
+
             when (shoppingListsState) {
                 is RequestState.Loading -> CircularProgressIndicator()
                 is RequestState.Success -> {
@@ -84,6 +88,9 @@ class MainScreen(private val token: String): Screen {
                         items(shoppingListsState.getSuccessData()) { list ->
                             ShoppingListCard(
                                 shoppingListModel = list,
+                                onClick = {
+                                    navigator?.push(ShoppingListScreen(listId = list.id, listName = list.name))
+                                },
                                 onIconClick = {
                                     viewModel.removeShoppingList(token = token, listId = list.id)
                                 })
@@ -95,6 +102,7 @@ class MainScreen(private val token: String): Screen {
                 }
                 else -> Unit
             }
+
             Box(
                 modifier = Modifier
                     .weight(0.1F)
@@ -112,6 +120,7 @@ class MainScreen(private val token: String): Screen {
                     }
                 }
             }
+
             if (showBottomSheet) {
                 ShoppingListBottomSheet(
                     onClick = { name -> viewModel.createShoppingList(token, name) },

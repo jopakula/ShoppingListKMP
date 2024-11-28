@@ -87,6 +87,9 @@ class AuthorizationScreen : Screen {
                    }
                }
            }
+           Button(onClick = { navigator?.pop() }) {
+               Text(text = "Вернуться")
+           }
        }
     }
 }

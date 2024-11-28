@@ -26,14 +26,14 @@ class AuthorizationScreenViewModel(
                 authorizationUseCase.execute(key = key)
             }.onSuccess { response ->
                 if (response.success) {
-                    _authState.value = RequestState.Success(response)  // Обновляем состояние на успешный результат
+                    _authState.value = RequestState.Success(response)
                     println(RequestState.Success(response))
                 } else {
-                    _authState.value = RequestState.Error("Invalid key or authentication failed")  // Обновляем состояние на ошибку
+                    _authState.value = RequestState.Error("Invalid key or authentication failed")
                     println(RequestState.Error("Invalid key or authentication failed"))
                 }
             }.onFailure { exception ->
-                _authState.value = RequestState.Error(exception.message ?: "Unknown error")  // Обновляем состояние на ошибку
+                _authState.value = RequestState.Error(exception.message ?: "Unknown error")
                 println(RequestState.Error(exception.message ?: "Unknown error"))
             }
         }

@@ -88,6 +88,9 @@ class RegistrationScreen : Screen {
                     }
                 }
             }
+            Button(onClick = { navigator?.pop() }) {
+                Text(text = "Вернуться")
+            }
         }
     }
 }

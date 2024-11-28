@@ -38,10 +38,10 @@ fun ShoppingListCard(
                 text = "ID: ${shoppingListModel.id}",
             )
             Text(
-                text = "Date: ${shoppingListModel.created}",
+                text = "Дата: ${shoppingListModel.created}",
             )
             Button(onClick = onIconClick){
-                Text(text = "Remove")
+                Text(text = "Удалить")
             }
         }
     }

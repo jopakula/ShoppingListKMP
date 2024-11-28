@@ -4,21 +4,38 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import presentation.screens.item.ItemScreen
+import domain.RequestState
+import org.koin.compose.viewmodel.koinViewModel
+import presentation.cards.ShoppingListItemCard
+import presentation.screenViewModels.ShoppingListScreenViewModel
 
-class ShoppingListScreen(private val listId: Int) : Screen {
+class ShoppingListScreen(private val listId: Int, private val listName: String) : Screen {
+
     @Composable
     override fun Content() {
+        val viewModel: ShoppingListScreenViewModel = koinViewModel()
         val navigator = LocalNavigator.current
-        val items = listOf(1, 2, 3, 4, 5, 6)
+
+        val shoppingListState by viewModel.shoppingListState.collectAsStateWithLifecycle()
+
+        LaunchedEffect(listId) {
+            viewModel.loadShoppingList(listId)
+        }
 
         Column(
             modifier = Modifier
@@ -27,14 +44,35 @@ class ShoppingListScreen(private val listId: Int) : Screen {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Text(text = "List screen $listId")
-            Button(onClick = { navigator?.pop() }) {
-                Text(text = "Back")
-            }
-            items.forEach {
-                Button(onClick = { navigator?.push(ItemScreen(itemId = it)) }) {
-                    Text(text = "To item screen $it")
+            Text("Shopping List: $listName")
+            when (shoppingListState) {
+                is RequestState.Loading -> {
+                    CircularProgressIndicator()
                 }
+                is RequestState.Success -> {
+                    val shoppingList = shoppingListState.getSuccessData()
+
+                    if (shoppingList.itemList.isEmpty()) {
+                        Text(text = "Список пуст", color = Color.Gray)
+                    } else {
+                        LazyColumn {
+                            items(shoppingList.itemList) { item ->
+                                ShoppingListItemCard(item = item)
+                            }
+                        }
+                    }
+                }
+                is RequestState.Error -> {
+                    Text("Error: ${shoppingListState.getErrorMessage()}")
+                    Button(onClick = { viewModel.loadShoppingList(listId) }) {
+                        Text("Retry")
+                    }
+                }
+                else -> Unit
+            }
+
+            Button(onClick = { navigator?.pop() }) {
+                Text(text = "Назад")
             }
         }
     }

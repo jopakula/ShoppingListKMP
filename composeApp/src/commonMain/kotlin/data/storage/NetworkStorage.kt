@@ -3,7 +3,8 @@ package data.storage
 import domain.models.AuthResponseModel
 import domain.models.CreateShoppingListResponseModel
 import domain.models.FetchAllShoppingListsResponseModel
-import domain.models.RemoveShoppingListResponse
+import domain.models.FetchShoppingListResponseModel
+import domain.models.RemoveShoppingListResponseModel
 
 interface NetworkStorage {
 
@@ -15,6 +16,8 @@ interface NetworkStorage {
 
     suspend fun fetchAllShoppingLists(key: String): FetchAllShoppingListsResponseModel
 
-    suspend fun removeShoppingList(listId: Int): RemoveShoppingListResponse
+    suspend fun removeShoppingList(listId: Int): RemoveShoppingListResponseModel
+
+    suspend fun fetchShoppingListById(listId: Int): FetchShoppingListResponseModel
 
 }

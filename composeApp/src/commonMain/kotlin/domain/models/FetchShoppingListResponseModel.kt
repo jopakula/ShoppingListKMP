@@ -4,8 +4,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RemoveShoppingListResponseModel(
+data class FetchShoppingListResponseModel (
     val success: Boolean,
-    @SerialName("new_value")
-    val newValue: Boolean
+    @SerialName("item_list")
+    val itemList: List<ShoppingListItemModel>
 )
