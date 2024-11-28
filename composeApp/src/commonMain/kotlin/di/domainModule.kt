@@ -1,5 +1,6 @@
 package di
 
+import domain.useCases.AddItemToShoppingListUseCase
 import domain.useCases.AuthorizationUseCase
 import domain.useCases.CreateShoppingListUseCase
 import domain.useCases.FetchAllShoppingListsUseCase
@@ -21,4 +22,6 @@ val domainModule = module {
     factory<RemoveShoppingListUseCase> { RemoveShoppingListUseCase(repository = get()) }
 
     factory<FetchShoppingListByIdUseCase> { FetchShoppingListByIdUseCase(repository = get()) }
+
+    factory<AddItemToShoppingListUseCase> { AddItemToShoppingListUseCase(repository = get()) }
 }

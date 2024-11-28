@@ -2,6 +2,7 @@ package data
 
 import data.storage.NetworkStorage
 import domain.Repository
+import domain.models.AddItemResponseModel
 import domain.models.AuthResponseModel
 import domain.models.CreateShoppingListResponseModel
 import domain.models.FetchAllShoppingListsResponseModel
@@ -33,5 +34,9 @@ class RepositoryImpl(
 
     override suspend fun fetchShoppingListById(listId: Int): FetchShoppingListResponseModel {
         return networkStorage.fetchShoppingListById(listId = listId)
+    }
+
+    override suspend fun addItemToShoppingList(listId: Int, name: String, quantity: Int): AddItemResponseModel {
+        return networkStorage.addItemToShoppingList(listId = listId, name = name, quantity = quantity)
     }
 }

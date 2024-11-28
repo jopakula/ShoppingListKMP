@@ -32,7 +32,8 @@ val appModule = module {
 
     viewModel<ShoppingListScreenViewModel> {
         ShoppingListScreenViewModel(
-            get()
+            fetchShoppingListByIdUseCase = get(),
+            addItemToShoppingListUseCase = get()
         )
     }
 

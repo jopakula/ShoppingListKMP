@@ -1,5 +1,6 @@
 package domain
 
+import domain.models.AddItemResponseModel
 import domain.models.AuthResponseModel
 import domain.models.CreateShoppingListResponseModel
 import domain.models.FetchAllShoppingListsResponseModel
@@ -19,4 +20,5 @@ interface Repository {
 
     suspend fun fetchShoppingListById(listId: Int): FetchShoppingListResponseModel
 
+    suspend fun addItemToShoppingList(listId: Int, name: String, quantity: Int): AddItemResponseModel
 }

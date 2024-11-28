@@ -12,6 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,6 +26,7 @@ import domain.RequestState
 import org.koin.compose.viewmodel.koinViewModel
 import presentation.cards.ShoppingListItemCard
 import presentation.screenViewModels.ShoppingListScreenViewModel
+import presentation.sheets.item.ItemBottomSheet
 
 class ShoppingListScreen(private val listId: Int, private val listName: String) : Screen {
 
@@ -32,6 +36,7 @@ class ShoppingListScreen(private val listId: Int, private val listName: String) 
         val navigator = LocalNavigator.current
 
         val shoppingListState by viewModel.shoppingListState.collectAsStateWithLifecycle()
+        var showBottomSheet by rememberSaveable { mutableStateOf(false) }
 
         LaunchedEffect(listId) {
             viewModel.loadShoppingList(listId)
@@ -69,6 +74,20 @@ class ShoppingListScreen(private val listId: Int, private val listName: String) 
                     }
                 }
                 else -> Unit
+            }
+
+            Button(onClick = { showBottomSheet = true }) {
+                Text(text = "Добавить товар")
+            }
+
+            if (showBottomSheet) {
+                ItemBottomSheet(
+                    onClick = { name, quantity ->
+                        viewModel.addItemToShoppingList(listId, name, quantity)
+                        showBottomSheet = false
+                    },
+                    onDismiss = { showBottomSheet = false }
+                )
             }
 
             Button(onClick = { navigator?.pop() }) {

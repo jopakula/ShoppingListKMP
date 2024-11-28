@@ -2,6 +2,7 @@ package data.storage.network
 
 import data.storage.NetworkStorage
 import domain.RequestState
+import domain.models.AddItemResponseModel
 import domain.models.AuthResponseModel
 import domain.models.CreateShoppingListResponseModel
 import domain.models.FetchAllShoppingListsResponseModel
@@ -60,6 +61,15 @@ class NetworkStorageImpl(val sdk: CyberprotSDK): NetworkStorage {
 
     override suspend fun fetchShoppingListById(listId: Int): FetchShoppingListResponseModel {
         val response = sdk.fetchShoppingListById(listId)
+        return when (response) {
+            is RequestState.Success -> response.data
+            is RequestState.Error -> throw Exception(response.message)
+            else -> throw Exception("Unexpected state")
+        }
+    }
+
+    override suspend fun addItemToShoppingList(listId: Int, name: String, quantity: Int): AddItemResponseModel {
+        val response = sdk.addItemToShoppingList(listId = listId, name = name, quantity = quantity)
         return when (response) {
             is RequestState.Success -> response.data
             is RequestState.Error -> throw Exception(response.message)

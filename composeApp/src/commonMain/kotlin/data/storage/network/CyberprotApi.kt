@@ -1,5 +1,6 @@
 package data.storage.network
 
+import domain.models.AddItemResponseModel
 import domain.models.AuthResponseModel
 import domain.models.CreateShoppingListResponseModel
 import domain.models.FetchAllShoppingListsResponseModel
@@ -39,15 +40,20 @@ class CyberprotApi {
         return client.get(urlString = url).body()
     }
 
-    suspend fun createShoppingList(key: String, name: String): CreateShoppingListResponseModel{
-        val url = "$BASE_URL_CYBERPROT/CreateShoppingList"
-        return client.get(urlString = url) {
-            url {
-                parameters.append("key", key)
-                parameters.append("name", name)
-            }
-        }.body()
+    suspend fun createShoppingList(key: String, name: String): CreateShoppingListResponseModel {
+        val url = "$BASE_URL_CYBERPROT/CreateShoppingList?key=$key&name=$name"
+        return client.get(urlString = url).body()
     }
+
+//    suspend fun createShoppingList(key: String, name: String): CreateShoppingListResponseModel{
+//        val url = "$BASE_URL_CYBERPROT/CreateShoppingList"
+//        return client.get(urlString = url) {
+//            url {
+//                parameters.append("key", key)
+//                parameters.append("name", name)
+//            }
+//        }.body()
+//    }
 
     suspend fun fetchAllShoppingLists(key: String): FetchAllShoppingListsResponseModel {
         val url = "$BASE_URL_CYBERPROT/GetAllMyShopLists?key=$key"
@@ -61,6 +67,11 @@ class CyberprotApi {
 
     suspend fun fetchShoppingListById(listId: Int): FetchShoppingListResponseModel {
         val url = "$BASE_URL_CYBERPROT/GetShoppingList?list_id=$listId"
+        return client.get(urlString = url).body()
+    }
+
+    suspend fun addItemToShoppingList(listId: Int, name: String, quantity: Int): AddItemResponseModel {
+        val url = "$BASE_URL_CYBERPROT/AddToShoppingList?id=$listId&value=$name&n=$quantity"
         return client.get(urlString = url).body()
     }
 }
