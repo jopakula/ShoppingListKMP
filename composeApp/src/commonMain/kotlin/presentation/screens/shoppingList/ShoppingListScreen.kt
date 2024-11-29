@@ -64,7 +64,12 @@ class ShoppingListScreen(private val listId: Int, private val listName: String) 
                             items(shoppingList.itemList) { item ->
                                 ShoppingListItemCard(
                                     item = item,
-                                    onIconClick = {viewModel.removeItemFromList(listId = listId, itemId = item.id) }
+                                    onIconClick = {viewModel.removeItemFromList(listId = listId, itemId = item.id) },
+                                    onCheckBoxClick = { isChecked ->
+                                        if (isChecked != item.isCrossed) {
+                                            viewModel.crossOffItem(itemId = item.id, listId = listId)
+                                        }
+                                    }
                                 )
                             }
                         }

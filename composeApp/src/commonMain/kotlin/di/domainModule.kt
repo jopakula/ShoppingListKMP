@@ -3,6 +3,7 @@ package di
 import domain.useCases.AddItemToShoppingListUseCase
 import domain.useCases.AuthorizationUseCase
 import domain.useCases.CreateShoppingListUseCase
+import domain.useCases.CrossOffItemUseCase
 import domain.useCases.FetchAllShoppingListsUseCase
 import domain.useCases.FetchRegistrationTokenUseCase
 import domain.useCases.FetchShoppingListByIdUseCase
@@ -27,4 +28,6 @@ val domainModule = module {
     factory<AddItemToShoppingListUseCase> { AddItemToShoppingListUseCase(repository = get()) }
 
     factory<RemoveItemFromShoppingListUseCase> { RemoveItemFromShoppingListUseCase(repository = get()) }
+
+    factory<CrossOffItemUseCase> { CrossOffItemUseCase(repository = get()) }
 }

@@ -5,12 +5,14 @@ import domain.RequestState
 import domain.models.AddItemResponseModel
 import domain.models.AuthResponseModel
 import domain.models.CreateShoppingListResponseModel
+import domain.models.CrossOffResponseModel
 import domain.models.FetchAllShoppingListsResponseModel
 import domain.models.FetchShoppingListResponseModel
 import domain.models.RemoveItemResponseModel
 import domain.models.RemoveShoppingListResponseModel
 
 class NetworkStorageImpl(val sdk: CyberprotSDK): NetworkStorage {
+
     override suspend fun createKey(): String {
         val response = sdk.createKey()
 
@@ -80,6 +82,15 @@ class NetworkStorageImpl(val sdk: CyberprotSDK): NetworkStorage {
 
     override suspend fun removeItemFromShoppingList(listId: Int, itemId: Int): RemoveItemResponseModel {
         val response = sdk.removeItemFromShoppingList(listId = listId, itemId = itemId)
+        return when (response) {
+            is RequestState.Success -> response.data
+            is RequestState.Error -> throw Exception(response.message)
+            else -> throw Exception("Unexpected state")
+        }
+    }
+
+    override suspend fun crossOffItem(itemId: Int): CrossOffResponseModel {
+        val response = sdk.crossOffItem(itemId = itemId)
         return when (response) {
             is RequestState.Success -> response.data
             is RequestState.Error -> throw Exception(response.message)

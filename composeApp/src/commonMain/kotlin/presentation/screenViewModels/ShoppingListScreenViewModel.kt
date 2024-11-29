@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import domain.RequestState
 import domain.models.FetchShoppingListResponseModel
 import domain.useCases.AddItemToShoppingListUseCase
+import domain.useCases.CrossOffItemUseCase
 import domain.useCases.FetchShoppingListByIdUseCase
 import domain.useCases.RemoveItemFromShoppingListUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +16,7 @@ class ShoppingListScreenViewModel(
     private val fetchShoppingListByIdUseCase: FetchShoppingListByIdUseCase,
     private val addItemToShoppingListUseCase: AddItemToShoppingListUseCase,
     private val removeItemFromShoppingListUseCase: RemoveItemFromShoppingListUseCase,
+    private val crossOffItemUseCase: CrossOffItemUseCase,
 ): ViewModel() {
 
     private val _shoppingListState = MutableStateFlow<RequestState<FetchShoppingListResponseModel>>(RequestState.Idle)
@@ -72,6 +74,18 @@ class ShoppingListScreenViewModel(
                 }
             }.onFailure { exception ->
                 _removeOperationState.value = RequestState.Error(exception.message ?: "Unknown error")
+            }
+        }
+    }
+
+    fun crossOffItem(itemId: Int, listId: Int,) {
+        viewModelScope.launch {
+            runCatching {
+                crossOffItemUseCase.execute(itemId)
+            }.onSuccess {
+                loadShoppingList(listId)
+            }.onFailure { exception ->
+                _shoppingListState.value = RequestState.Error(exception.message ?: "Unknown error")
             }
         }
     }

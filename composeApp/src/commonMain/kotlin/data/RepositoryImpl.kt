@@ -5,6 +5,7 @@ import domain.Repository
 import domain.models.AddItemResponseModel
 import domain.models.AuthResponseModel
 import domain.models.CreateShoppingListResponseModel
+import domain.models.CrossOffResponseModel
 import domain.models.FetchAllShoppingListsResponseModel
 import domain.models.FetchShoppingListResponseModel
 import domain.models.RemoveItemResponseModel
@@ -43,5 +44,9 @@ class RepositoryImpl(
 
     override suspend fun removeItemFromShoppingList(listId: Int, itemId: Int): RemoveItemResponseModel {
         return networkStorage.removeItemFromShoppingList(listId = listId, itemId = itemId)
+    }
+
+    override suspend fun crossOffItem(itemId: Int): CrossOffResponseModel {
+        return networkStorage.crossOffItem(itemId = itemId)
     }
 }

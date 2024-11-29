@@ -34,7 +34,8 @@ val appModule = module {
         ShoppingListScreenViewModel(
             fetchShoppingListByIdUseCase = get(),
             addItemToShoppingListUseCase = get(),
-            removeItemFromShoppingListUseCase = get()
+            removeItemFromShoppingListUseCase = get(),
+            crossOffItemUseCase = get(),
         )
     }
 

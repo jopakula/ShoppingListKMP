@@ -3,6 +3,7 @@ package data.storage.network
 import domain.models.AddItemResponseModel
 import domain.models.AuthResponseModel
 import domain.models.CreateShoppingListResponseModel
+import domain.models.CrossOffResponseModel
 import domain.models.FetchAllShoppingListsResponseModel
 import domain.models.FetchShoppingListResponseModel
 import domain.models.RemoveItemResponseModel
@@ -34,7 +35,6 @@ class CyberprotApi {
         val url = "$BASE_URL_CYBERPROT/CreateTestKey?"
         return client.get(urlString = url).body()
     }
-
 
     suspend fun authenticateWithKey(key: String): AuthResponseModel {
         val url = "$BASE_URL_CYBERPROT/Authentication?key=$key"
@@ -68,6 +68,11 @@ class CyberprotApi {
 
     suspend fun removeItemFromShoppingList(listId: Int, itemId: Int): RemoveItemResponseModel {
         val url = "$BASE_URL_CYBERPROT/RemoveFromList?list_id=$listId&item_id=$itemId"
+        return client.get(urlString = url).body()
+    }
+
+    suspend fun crossOffItem(itemId: Int): CrossOffResponseModel {
+        val url = "$BASE_URL_CYBERPROT/CrossItOff?id=$itemId"
         return client.get(urlString = url).body()
     }
 }

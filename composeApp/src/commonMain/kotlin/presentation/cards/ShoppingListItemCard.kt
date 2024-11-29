@@ -7,17 +7,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import domain.models.ShoppingListItemModel
 
 @Composable
 fun ShoppingListItemCard(
     item: ShoppingListItemModel,
-    onIconClick: () -> Unit = {},) {
+    onIconClick: () -> Unit = {},
+    onCheckBoxClick: (Boolean) -> Unit = {}
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -31,8 +35,15 @@ fun ShoppingListItemCard(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Checkbox(
+                checked = item.isCrossed,
+                onCheckedChange = onCheckBoxClick
+            )
             Text(text = item.id.toString())
-            Text(text = item.name)
+            Text(text = item.isCrossed.toString())
+            Text(
+                text = item.name,
+                textDecoration = if (item.isCrossed) TextDecoration.LineThrough else TextDecoration.None)
             Text(text = item.created)
             Button(onClick = onIconClick){
                 Text(text = "Удалить")
