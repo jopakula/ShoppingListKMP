@@ -6,6 +6,7 @@ import domain.models.AuthResponseModel
 import domain.models.CreateShoppingListResponseModel
 import domain.models.FetchAllShoppingListsResponseModel
 import domain.models.FetchShoppingListResponseModel
+import domain.models.RemoveItemResponseModel
 import domain.models.RemoveShoppingListResponseModel
 
 class CyberprotSDK (private val api: CyberprotApi) {
@@ -67,6 +68,15 @@ class CyberprotSDK (private val api: CyberprotApi) {
     suspend fun  addItemToShoppingList(listId: Int, name: String, quantity: Int): RequestState<AddItemResponseModel>{
         return try {
             val response = api.addItemToShoppingList(listId = listId, name = name, quantity = quantity)
+            RequestState.Success(response)
+        } catch (e: Exception) {
+            RequestState.Error(e.message ?: "Unknown error")
+        }
+    }
+
+    suspend fun removeItemFromShoppingList(listId: Int, itemId: Int): RequestState<RemoveItemResponseModel> {
+        return try {
+            val response = api.removeItemFromShoppingList(listId = listId, itemId = itemId)
             RequestState.Success(response)
         } catch (e: Exception) {
             RequestState.Error(e.message ?: "Unknown error")

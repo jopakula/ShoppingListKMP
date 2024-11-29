@@ -62,7 +62,10 @@ class ShoppingListScreen(private val listId: Int, private val listName: String) 
                     } else {
                         LazyColumn {
                             items(shoppingList.itemList) { item ->
-                                ShoppingListItemCard(item = item)
+                                ShoppingListItemCard(
+                                    item = item,
+                                    onIconClick = {viewModel.removeItemFromList(listId = listId, itemId = item.id) }
+                                )
                             }
                         }
                     }

@@ -6,6 +6,7 @@ import domain.useCases.CreateShoppingListUseCase
 import domain.useCases.FetchAllShoppingListsUseCase
 import domain.useCases.FetchRegistrationTokenUseCase
 import domain.useCases.FetchShoppingListByIdUseCase
+import domain.useCases.RemoveItemFromShoppingListUseCase
 import domain.useCases.RemoveShoppingListUseCase
 import org.koin.dsl.module
 
@@ -24,4 +25,6 @@ val domainModule = module {
     factory<FetchShoppingListByIdUseCase> { FetchShoppingListByIdUseCase(repository = get()) }
 
     factory<AddItemToShoppingListUseCase> { AddItemToShoppingListUseCase(repository = get()) }
+
+    factory<RemoveItemFromShoppingListUseCase> { RemoveItemFromShoppingListUseCase(repository = get()) }
 }

@@ -12,13 +12,13 @@ val appModule = module {
     viewModel<RegistrationScreenViewModel> {
         RegistrationScreenViewModel(
             fetchRegistrationTokenUseCase = get(),
-            authorizationUseCase = get()
+            authorizationUseCase = get(),
         )
     }
 
     viewModel<AuthorizationScreenViewModel> {
         AuthorizationScreenViewModel(
-            authorizationUseCase = get()
+            authorizationUseCase = get(),
         )
     }
 
@@ -26,14 +26,15 @@ val appModule = module {
         MainScreenViewModel(
             fetchAllShoppingListsUseCase = get(),
             createShoppingListUseCase = get(),
-            removeShoppingListUseCase = get()
+            removeShoppingListUseCase = get(),
         )
     }
 
     viewModel<ShoppingListScreenViewModel> {
         ShoppingListScreenViewModel(
             fetchShoppingListByIdUseCase = get(),
-            addItemToShoppingListUseCase = get()
+            addItemToShoppingListUseCase = get(),
+            removeItemFromShoppingListUseCase = get()
         )
     }
 

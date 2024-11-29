@@ -7,6 +7,7 @@ import domain.models.AuthResponseModel
 import domain.models.CreateShoppingListResponseModel
 import domain.models.FetchAllShoppingListsResponseModel
 import domain.models.FetchShoppingListResponseModel
+import domain.models.RemoveItemResponseModel
 import domain.models.RemoveShoppingListResponseModel
 
 class NetworkStorageImpl(val sdk: CyberprotSDK): NetworkStorage {
@@ -70,6 +71,15 @@ class NetworkStorageImpl(val sdk: CyberprotSDK): NetworkStorage {
 
     override suspend fun addItemToShoppingList(listId: Int, name: String, quantity: Int): AddItemResponseModel {
         val response = sdk.addItemToShoppingList(listId = listId, name = name, quantity = quantity)
+        return when (response) {
+            is RequestState.Success -> response.data
+            is RequestState.Error -> throw Exception(response.message)
+            else -> throw Exception("Unexpected state")
+        }
+    }
+
+    override suspend fun removeItemFromShoppingList(listId: Int, itemId: Int): RemoveItemResponseModel {
+        val response = sdk.removeItemFromShoppingList(listId = listId, itemId = itemId)
         return when (response) {
             is RequestState.Success -> response.data
             is RequestState.Error -> throw Exception(response.message)

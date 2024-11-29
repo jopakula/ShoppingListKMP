@@ -5,6 +5,7 @@ import domain.models.AuthResponseModel
 import domain.models.CreateShoppingListResponseModel
 import domain.models.FetchAllShoppingListsResponseModel
 import domain.models.FetchShoppingListResponseModel
+import domain.models.RemoveItemResponseModel
 import domain.models.RemoveShoppingListResponseModel
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -45,16 +46,6 @@ class CyberprotApi {
         return client.get(urlString = url).body()
     }
 
-//    suspend fun createShoppingList(key: String, name: String): CreateShoppingListResponseModel{
-//        val url = "$BASE_URL_CYBERPROT/CreateShoppingList"
-//        return client.get(urlString = url) {
-//            url {
-//                parameters.append("key", key)
-//                parameters.append("name", name)
-//            }
-//        }.body()
-//    }
-
     suspend fun fetchAllShoppingLists(key: String): FetchAllShoppingListsResponseModel {
         val url = "$BASE_URL_CYBERPROT/GetAllMyShopLists?key=$key"
         return client.get(urlString = url).body()
@@ -72,6 +63,11 @@ class CyberprotApi {
 
     suspend fun addItemToShoppingList(listId: Int, name: String, quantity: Int): AddItemResponseModel {
         val url = "$BASE_URL_CYBERPROT/AddToShoppingList?id=$listId&value=$name&n=$quantity"
+        return client.get(urlString = url).body()
+    }
+
+    suspend fun removeItemFromShoppingList(listId: Int, itemId: Int): RemoveItemResponseModel {
+        val url = "$BASE_URL_CYBERPROT/RemoveFromList?list_id=$listId&item_id=$itemId"
         return client.get(urlString = url).body()
     }
 }
