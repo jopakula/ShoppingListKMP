@@ -38,69 +38,84 @@ class AuthorizationScreen : Screen {
         val authState by viewModel.authState.collectAsStateWithLifecycle()
         val key by viewModel.key.collectAsStateWithLifecycle()
 
-       Column(
-           modifier = Modifier
-               .fillMaxSize()
-               .padding(24.dp),
-           verticalArrangement = Arrangement.spacedBy(16.dp),
-           horizontalAlignment = Alignment.CenterHorizontally,
-       ) {
-           OutlinedTextField(
-               modifier = Modifier
-                   .fillMaxWidth(),
-               value = key,
-               onValueChange = { newKey ->
-                   viewModel.updateKey(newKey)
-               },
-               label = { Text(text = "Введите токен пользователя") },
-               shape = RoundedCornerShape(16.dp),
-               colors = TextFieldDefaults.colors(
-                   focusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f),
-                   unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                   unfocusedIndicatorColor = Color.Transparent,
-                   focusedTextColor = MaterialTheme.colorScheme.primary,
-               )
-           )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    value = key,
+                    onValueChange = { newKey ->
+                        viewModel.updateKey(newKey)
+                    },
+                    label = { Text(text = "Введите токен пользователя") },
+                    shape = RoundedCornerShape(16.dp),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(
+                            alpha = 0.1f
+                        ),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        focusedTextColor = MaterialTheme.colorScheme.primary,
+                    )
+                )
 
-           if (authState is RequestState.Idle ) {
-               Button(
-                   onClick = {
-                       viewModel.logIn(key = key)
-                   },
-                   enabled = authState !is RequestState.Loading
-               ) {
-                   Text("Войти")
-               }
-           }
+                if (authState is RequestState.Idle) {
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        onClick = {
+                            viewModel.logIn(key = key)
+                        },
+                        enabled = authState !is RequestState.Loading
+                    ) {
+                        Text("Войти")
+                    }
+                }
 
-           when (authState) {
-               is RequestState.Idle -> {}
-               is RequestState.Loading -> {
-                   CircularProgressIndicator()
-               }
-               is RequestState.Success -> {
-                   Text("Успешный вход!")
-                   LaunchedEffect(Unit) {
-                       delay(1000)
-                       navigator?.replaceAll(MainScreen(token = key))
-                       viewModel.resetState()
-                   }
-               }
-               is RequestState.Error -> {
-                   val errorMessage = authState.getErrorMessage()
-                   Text(
-                       text = "Ошибка авторизации: $errorMessage",
-                   )
-                   Button(onClick = {
-                       viewModel.logIn(key = key)
-                   }) {
-                       Text("Попробовать снова")
-                   }
-               }
-           }
-           Button(onClick = { navigator?.pop() }) {
-               Text(text = "Вернуться")
-           }
-       }
+                when (authState) {
+                    is RequestState.Idle -> {}
+                    is RequestState.Loading -> {
+                        CircularProgressIndicator()
+                    }
+
+                    is RequestState.Success -> {
+                        Text("Успешный вход!")
+                        LaunchedEffect(Unit) {
+                            delay(1000)
+                            navigator?.replaceAll(MainScreen(token = key))
+                            viewModel.resetState()
+                        }
+                    }
+
+                    is RequestState.Error -> {
+                        val errorMessage = authState.getErrorMessage()
+                        Text(
+                            text = "Ошибка авторизации: $errorMessage",
+                        )
+                        Button(onClick = {
+                            viewModel.logIn(key = key)
+                        }) {
+                            Text("Попробовать снова")
+                        }
+                    }
+                }
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    onClick = { navigator?.pop() }
+                ) {
+                    Text(text = "Вернуться")
+                }
+            }
+        }
     }
 }
