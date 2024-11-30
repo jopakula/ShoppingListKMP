@@ -30,7 +30,7 @@ class SplashScreen : Screen {
 
         LaunchedEffect(Unit) {
             delay(4000)
-            navigator?.push(AccessScreen())
+            navigator?.replace(AccessScreen())
         }
 
         val composition by rememberLottieComposition {

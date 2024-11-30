@@ -71,7 +71,7 @@ class AuthorizationScreen : Screen {
                    Text("Успешный вход!")
                    LaunchedEffect(Unit) {
                        delay(1000)
-                       navigator?.push(MainScreen(token = key))
+                       navigator?.replaceAll(MainScreen(token = key))
                        viewModel.resetState()
                    }
                }

@@ -75,7 +75,7 @@ class RegistrationScreen : Screen {
 
                     LaunchedEffect(Unit) {
                         delay(1000)
-                        navigator?.push(MainScreen(token = keyState.getSuccessData()))
+                        navigator?.replaceAll(MainScreen(token = keyState.getSuccessData()))
                         viewModel.resetState()
                     }
                 }
