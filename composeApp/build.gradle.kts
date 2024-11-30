@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -26,6 +25,12 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+        }
+    }
+
+    sourceSets {
+        commonMain {
+            resources.srcDirs("src/commonMain/composeResources/files")
         }
     }
     
@@ -62,6 +67,8 @@ kotlin {
             implementation(libs.navigator.tabs)
             implementation(libs.navigator.transitions)
             implementation(libs.navigator.koin)
+
+            implementation(libs.compottie)
 
         }
     }
