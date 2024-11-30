@@ -20,7 +20,6 @@ class MainScreenViewModel(
     private val _shoppingListsState = MutableStateFlow<RequestState<List<ShoppingListModel>>>(RequestState.Idle)
     val shoppingListsState: StateFlow<RequestState<List<ShoppingListModel>>> = _shoppingListsState
 
-
     private val _createOperationState = MutableStateFlow<RequestState<Boolean>>(RequestState.Idle)
     val createOperationState: StateFlow<RequestState<Boolean>> = _createOperationState
 

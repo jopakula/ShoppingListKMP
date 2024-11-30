@@ -36,7 +36,10 @@ fun AnimatedShoppingListCard(
         ShoppingListCard(
             shoppingListModel = shoppingListModel,
             onClick = onClick,
-            onIconClick = onIconClick
+            onIconClick = {
+                visible = false
+                onIconClick()
+            }
         )
     }
 

@@ -1,6 +1,7 @@
 package presentation.cards.shoppingListItem
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,8 +25,7 @@ fun ShoppingListItemCard(
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .fillMaxWidth(),
         elevation = CardDefaults.elevatedCardElevation()
     ) {
         Row(
@@ -35,16 +35,29 @@ fun ShoppingListItemCard(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Checkbox(
-                checked = item.isCrossed,
-                onCheckedChange = onCheckBoxClick
-            )
-            Text(text = item.id.toString())
-            Text(text = item.isCrossed.toString())
-            Text(
-                text = item.name,
-                textDecoration = if (item.isCrossed) TextDecoration.LineThrough else TextDecoration.None)
-            Text(text = item.created)
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(
+                    checked = item.isCrossed,
+                    onCheckedChange = onCheckBoxClick
+                )
+                Column(
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Text(
+                        text = "Товар: ${item.name}",
+                        textDecoration = if (item.isCrossed) TextDecoration.LineThrough else TextDecoration.None
+                    )
+                    Text(
+                        text = "Колличество: ${item.created}",
+                        textDecoration = if (item.isCrossed) TextDecoration.LineThrough else TextDecoration.None
+                    )
+                }
+            }
+
+
             Button(onClick = onIconClick){
                 Text(text = "Удалить")
             }

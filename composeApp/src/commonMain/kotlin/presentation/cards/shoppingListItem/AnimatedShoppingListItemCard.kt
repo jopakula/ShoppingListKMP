@@ -35,7 +35,10 @@ fun AnimatedShoppingListItemCard(
     ) {
         ShoppingListItemCard(
             item = item,
-            onIconClick = onIconClick,
+            onIconClick = {
+                visible = false
+                onIconClick()
+            },
             onCheckBoxClick = onCheckBoxClick
         )
     }

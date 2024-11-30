@@ -3,7 +3,7 @@ package presentation.screenViewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import domain.RequestState
-import domain.models.FetchShoppingListResponseModel
+import domain.models.ShoppingListItemModel
 import domain.useCases.AddItemToShoppingListUseCase
 import domain.useCases.CrossOffItemUseCase
 import domain.useCases.FetchShoppingListByIdUseCase
@@ -19,8 +19,8 @@ class ShoppingListScreenViewModel(
     private val crossOffItemUseCase: CrossOffItemUseCase,
 ): ViewModel() {
 
-    private val _shoppingListState = MutableStateFlow<RequestState<FetchShoppingListResponseModel>>(RequestState.Idle)
-    val shoppingListState: StateFlow<RequestState<FetchShoppingListResponseModel>> = _shoppingListState
+    private val _shoppingListState = MutableStateFlow<RequestState<List<ShoppingListItemModel>>>(RequestState.Idle)
+    val shoppingListState: StateFlow<RequestState<List<ShoppingListItemModel>>> = _shoppingListState
 
     private val _addOperationState = MutableStateFlow<RequestState<Boolean>>(RequestState.Idle)
     val addOperationState: StateFlow<RequestState<Boolean>> = _addOperationState
@@ -31,11 +31,10 @@ class ShoppingListScreenViewModel(
 
     fun loadShoppingList(listId: Int){
         viewModelScope.launch {
-            _shoppingListState.value = RequestState.Loading
             runCatching {
                 fetchShoppingListByIdUseCase.execute(listId = listId)
             }.onSuccess {response ->
-                _shoppingListState.value = RequestState.Success(response)
+                _shoppingListState.value = RequestState.Success(response.itemList)
             }.onFailure { exception ->
                 _shoppingListState.value = RequestState.Error(exception.message ?: "Unknown error")
             }

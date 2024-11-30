@@ -23,7 +23,6 @@ fun ShoppingListCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
             .clickable { onClick() },
         elevation = CardDefaults.elevatedCardElevation()
     ) {
@@ -31,14 +30,12 @@ fun ShoppingListCard(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
+
             Text(
-                text = shoppingListModel.name,
+                text = "Список: ${shoppingListModel.name}",
             )
             Text(
-                text = "ID: ${shoppingListModel.id}",
-            )
-            Text(
-                text = "Дата: ${shoppingListModel.created}",
+                text = "Дата создания: ${shoppingListModel.created}",
             )
             Button(onClick = onIconClick){
                 Text(text = "Удалить")
