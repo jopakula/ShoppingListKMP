@@ -27,7 +27,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import domain.RequestState
 import org.koin.compose.viewmodel.koinViewModel
-import presentation.cards.ShoppingListCard
+import presentation.cards.shoppingList.AnimatedShoppingListCard
 import presentation.screenViewModels.MainScreenViewModel
 import presentation.screens.shoppingList.ShoppingListScreen
 import presentation.sheets.shoppingList.ShoppingListBottomSheet
@@ -84,16 +84,24 @@ class MainScreen(private val token: String): Screen {
             when (shoppingListsState) {
                 is RequestState.Loading -> CircularProgressIndicator()
                 is RequestState.Success -> {
-                    LazyColumn {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
                         items(shoppingListsState.getSuccessData()) { list ->
-                            ShoppingListCard(
+                            AnimatedShoppingListCard(
                                 shoppingListModel = list,
                                 onClick = {
-                                    navigator?.push(ShoppingListScreen(listId = list.id, listName = list.name))
+                                    navigator?.push(
+                                        ShoppingListScreen(
+                                            listId = list.id,
+                                            listName = list.name
+                                        )
+                                    )
                                 },
                                 onIconClick = {
                                     viewModel.removeShoppingList(token = token, listId = list.id)
-                                })
+                                }
+                            )
                         }
                     }
                 }
@@ -102,6 +110,7 @@ class MainScreen(private val token: String): Screen {
                 }
                 else -> Unit
             }
+
 
             Box(
                 modifier = Modifier

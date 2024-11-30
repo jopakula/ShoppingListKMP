@@ -1,4 +1,4 @@
-package presentation.cards
+package presentation.cards.shoppingListItem
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

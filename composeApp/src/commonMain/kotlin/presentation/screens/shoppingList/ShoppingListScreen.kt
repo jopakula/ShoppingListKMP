@@ -24,7 +24,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import domain.RequestState
 import org.koin.compose.viewmodel.koinViewModel
-import presentation.cards.ShoppingListItemCard
+import presentation.cards.shoppingListItem.AnimatedShoppingListItemCard
 import presentation.screenViewModels.ShoppingListScreenViewModel
 import presentation.sheets.item.ItemBottomSheet
 
@@ -62,9 +62,9 @@ class ShoppingListScreen(private val listId: Int, private val listName: String) 
                     } else {
                         LazyColumn {
                             items(shoppingList.itemList) { item ->
-                                ShoppingListItemCard(
+                                AnimatedShoppingListItemCard(
                                     item = item,
-                                    onIconClick = {viewModel.removeItemFromList(listId = listId, itemId = item.id) },
+                                    onIconClick = { viewModel.removeItemFromList(listId = listId, itemId = item.id) },
                                     onCheckBoxClick = { isChecked ->
                                         if (isChecked != item.isCrossed) {
                                             viewModel.crossOffItem(itemId = item.id, listId = listId)
@@ -73,6 +73,7 @@ class ShoppingListScreen(private val listId: Int, private val listName: String) 
                                 )
                             }
                         }
+
                     }
                 }
                 is RequestState.Error -> {

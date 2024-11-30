@@ -1,4 +1,4 @@
-package presentation.cards
+package presentation.cards.shoppingList
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
